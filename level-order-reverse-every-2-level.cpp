@@ -89,6 +89,5 @@ int main() {
     root->right->right->left->right = newNode(19);
 
     modifiedLevelOrder(root);
-
     return 0;
 }
