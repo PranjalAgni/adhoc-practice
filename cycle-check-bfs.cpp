@@ -9,7 +9,7 @@ bool bfs(int vertex, vector<vector<int>>& adjList, unordered_map<int, bool>& vis
 		pair<int, int> current = q.front();
 		q.pop();
 
-		int nodeValue = current.first;
+		nodeValue = current.first;
 		int parentValue = current.second;
 		visitedMap[nodeValue] = true;
 
