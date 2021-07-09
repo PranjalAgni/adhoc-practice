@@ -22,6 +22,15 @@ int main() {
 	freopen("output.txt", "w", stdout);
 #endif
 
-	cout << solve({1, 2, 3, 5, 8}) << endl;
+	int N;
+	cin >> N;
+
+	vector<int> nums(N);
+
+	for (int idx = 0; idx < N; idx++) {
+		cin >> nums[idx];
+	}
+
+	cout << solve(nums) << endl;
 	return 0;
 }
