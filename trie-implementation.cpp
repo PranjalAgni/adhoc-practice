@@ -19,7 +19,6 @@ struct TrieNode* getNode() {
 }
 
 void insert(struct TrieNode* root, string key) {
-
 	struct TrieNode* runnerNode = root;
 	for (char ch : key) {
 		int index = ch - 'a';
@@ -57,11 +56,11 @@ int countChildren(struct TrieNode* node, int& index) {
 	return count;
 }
 
-string longestCommonPrefix(struct TrieNode* root, char start) {
+string longestCommonPrefix(struct TrieNode* root) {
 	string longestPrefix = "";
 	struct TrieNode* runnerNode = root;
 	int index;
-	while (countChildren(runnerNode, index) == 1 && !runnerNode->isLeaf) {
+	while (countChildren(runnerNode, index) == 1 && runnerNode->isLeaf == false) {
 		runnerNode = runnerNode->children[index];
 		longestPrefix.push_back('a' + index);
 	}
@@ -83,6 +82,6 @@ int main() {
 		insert(root, word);
 	}
 
-	cout << longestCommonPrefix(root, 't') << endl;
+	cout << longestCommonPrefix(root) << endl;
 	return 0;
 }
