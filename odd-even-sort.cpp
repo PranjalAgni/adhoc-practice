@@ -16,8 +16,10 @@ vector<int> oddEvenSort(vector<int>& array) {
 	sort(array.begin(), array.end());
 
 	while (low < high) {
+		// test for the odd element
 		if (array[high] % 2 != 0) {
 			swap(array[low], array[high]);
+			// incrementing high, because as we swapped so array[high] may contain a odd element
 			high += 1;
 			low += 1;
 		}
