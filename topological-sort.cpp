@@ -26,18 +26,18 @@ vector<int> getIndegreeOfVerticies(vector<vector<int>>& graph) {
 	return indegree;
 }
 
-void topologicalSort(vector<vector<int>>& graph, vector<int>& indegree, vector<int>& verticiesWithNoIncomingEdges) {
+void topologicalSort(vector<vector<int>>& graph, vector<int>& indegree, stack<int>& verticiesWithNoIncomingEdges) {
 	int V = graph.size();
 	vector<int> topologicalOrdering;
 
-	while (verticiesWithNoIncomingEdges.size()) {
-		int v = verticiesWithNoIncomingEdges.back();
-		verticiesWithNoIncomingEdges.pop_back();
+	while (!verticiesWithNoIncomingEdges.empty()) {
+		int v = verticiesWithNoIncomingEdges.top();
+		verticiesWithNoIncomingEdges.pop();
 		topologicalOrdering.push_back(v);
 		for (int e = 0; e < graph[v].size(); e++) {
 			indegree[graph[v][e]] -= 1;
 			if (indegree[graph[v][e]] == 0) {
-				verticiesWithNoIncomingEdges.push_back(graph[v][e]);
+				verticiesWithNoIncomingEdges.push(graph[v][e]);
 			}
 		}
 
@@ -52,12 +52,12 @@ void topologicalSort(vector<vector<int>>& graph, vector<int>& indegree, vector<i
 	return;
 }
 
-vector<int> getZeroIndegreeVerticies(vector<int>& indegree) {
+stack<int> getZeroIndegreeVerticies(vector<int>& indegree) {
 	int V = indegree.size();
-	vector<int> verticiesWithNoIncomingEdges;
+	stack<int> verticiesWithNoIncomingEdges;
 	for (int v = 0; v < V; v++) {
 		if (indegree[v] == 0) {
-			verticiesWithNoIncomingEdges.push_back(v);
+			verticiesWithNoIncomingEdges.push(v);
 		}
 	}
 
@@ -92,7 +92,7 @@ int main() {
 	// printGraph(graph);
 
 	vector<int> indegree = getIndegreeOfVerticies(graph);
-	vector<int> verticiesWithNoIncomingEdges = getZeroIndegreeVerticies(indegree);
+	stack<int> verticiesWithNoIncomingEdges = getZeroIndegreeVerticies(indegree);
 	topologicalSort(graph, indegree, verticiesWithNoIncomingEdges);
 	return 0;
 }
