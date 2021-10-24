@@ -18,16 +18,31 @@ int main() {
 	int pos = 0;
 	vector<int> nums;
 	vector<int> medianOfWindow;
+	set<pair<int, int>> window;
+	set<int> temp;
+	// 1. get middle element from set
+	// 2. remove the pos index element from set
+
+	int medianElementIndex = (K % 2 == 0) ? K / 2 - 1 : K / 2;
 
 	while (pos < N) {
-		nums.push_back(elements[pos]);
-		int windowSize = nums.size();
+		pair<int, int> p = make_pair(nums[pos], pos);
+		window.insert(p);
+		cout << window.size() << endl;
+		int windowSize = window.size();
 		if (windowSize == K) {
-			vector<int> sortedNums = nums;
-			sort(sortedNums.begin(), sortedNums.end());
-			int currentMedian = (K % 2 == 0) ? sortedNums[(K / 2) - 1] : sortedNums[K / 2];
-			medianOfWindow.push_back(currentMedian);
-			nums.erase(nums.begin());
+			int currentIndex = 0;
+
+			for (const auto& iterator : window) {
+				if (medianElementIndex == currentIndex) {
+					medianOfWindow.push_back(iterator.first);
+					break;
+				}
+				currentIndex += 1;
+			}
+
+			// remove the element from set
+			window.erase({nums[pos - K], K});
 		}
 		pos += 1;
 	}
