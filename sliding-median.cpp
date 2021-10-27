@@ -19,9 +19,11 @@ int main() {
 	vector<int> nums;
 	vector<int> medianOfWindow;
 	set<pair<int, int>> window;
-	set<int> temp;
-	// 1. get middle element from set
+	// 1. If length is odd
+	// get middle element from set if
+	// else get the lower middle element from the set
 	// 2. remove the pos index element from set
+	// 3. add the median to answer list
 
 	int medianElementIndex = (K % 2 == 0) ? K / 2 - 1 : K / 2;
 
