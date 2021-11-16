@@ -18,7 +18,6 @@ int main() {
 	int N, M;
 	cin >> N >> M;
 	vector<vector<char>> graph(N, vector<char>(M));
-	vector<vector<bool>> visited(N, vector<bool>(M, false));
 
 	queue<pair<int, int>> nodeQueue;
 	pair<int, int> begin, end;
@@ -30,11 +29,8 @@ int main() {
 			if (ch == 'A') {
 				begin = {row, col};
 				nodeQueue.push(begin);
-				visited[row][col] = true;
 			} else if (ch == 'B') {
 				end = {row, col};
-			} else if (ch == '#') {
-				visited[row][col] = true;
 			}
 		}
 	}
@@ -51,9 +47,9 @@ int main() {
 			int newRow = currentNode.first + stepValue.first;
 			int newCol = currentNode.second + stepValue.second;
 
-			if (isValid(N, M, newRow, newCol) && !visited[newRow][newCol]) {
+			if (isValid(N, M, newRow, newCol) && graph[newRow][newCol] != '#') {
 				char ch = graph[newRow][newCol];
-				visited[newRow][newCol] = true;
+				graph[newRow][newCol] = '#';
 				pair<int, int> nextNodeInfo = {newRow, newCol};
 				parent[nextNodeInfo] = direction;
 				if (ch == 'B') {
