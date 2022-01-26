@@ -49,39 +49,29 @@ void printSparseTable(vector<vector<int>>& sparseTable) {
 }
 
 vector<vector<int>> __slowSparseTable(vector<int>& nums, int& N) {
-	int maxPower2 = getClosestPowerOf2(N);
-	cout << "Cols = " << maxPower2 << endl;
-	vector<vector<int>> sparseTable(N, vector<int>(maxPower2, -1));
+	int K = floor(log2(N)) + 1;
+	cout << K << endl;
+	vector<vector<int>> sparseTable(N, vector<int>(K, -1));
 
-	// windows of size 1
-	for (int idx = 0; idx < N; idx++) {
-		sparseTable[idx][0] = nums[idx];
-	}
+	for (int idx = 0; idx < N; idx++) sparseTable[idx][0] = nums[idx];
 
-	// 7 2 3 0 5 10 3 12 18
-	// 7 2 size = {2}
-	// 7
 
 	for (int idx = 0; idx < N; idx++) {
-		for (int power = 1; power < maxPower2; power++) {
-			int size = pow(2, power);
-
-			// cout << "Size = " << size << endl;
-			// cout << "Trying for " << idx << " to " << idx + size << endl;
-			int currMin = INT_MAX;
-			for (int step = 1; idx + step - 1 < N; step++) {
-				// int jdx = idx + step - 1;
-				// if (jdx >= N) break;
-				// if (idx > 0) cout << idx << " " << jdx << endl;
-				currMin = min(currMin, nums[step]);
-
+		// cout << "Starting at " << nums[idx] << " ";
+		for (int exp = 1; exp < K; exp++) {
+			int size = pow(2, exp);
+			int start = 0;
+			int minInWindow = INT_MAX;
+			int elementsWeHave = N - idx;
+			if (size > elementsWeHave) continue;
+			while (start < size && (idx + start) < N) {
+				minInWindow = min(minInWindow, nums[idx + start]);
+				start += 1;
 			}
 
-			cout << "Min in window = " << idx << " " << size << "(" << power << ")" << " ";
-			cout << "Is " << currMin << endl;
-
-			sparseTable[idx][power] = currMin;
+			if (minInWindow != INT_MAX) sparseTable[idx][exp] = minInWindow;
 		}
+
 	}
 
 	printSparseTable(sparseTable);
