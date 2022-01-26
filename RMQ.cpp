@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+const int MAXN = 100;
 // Range Minimum query
 
 // Our goal is to answer all Q queries in O(1) time
@@ -50,7 +51,6 @@ void printSparseTable(vector<vector<int>>& sparseTable) {
 
 vector<vector<int>> __slowSparseTable(vector<int>& nums, int& N) {
 	int K = floor(log2(N)) + 1;
-	cout << K << endl;
 	vector<vector<int>> sparseTable(N, vector<int>(K, -1));
 
 	for (int idx = 0; idx < N; idx++) sparseTable[idx][0] = nums[idx];
@@ -58,18 +58,18 @@ vector<vector<int>> __slowSparseTable(vector<int>& nums, int& N) {
 
 	for (int idx = 0; idx < N; idx++) {
 		// cout << "Starting at " << nums[idx] << " ";
-		for (int exp = 1; exp < K; exp++) {
+		for (int exp = 1; exp <= K; exp++) {
 			int size = pow(2, exp);
-			int start = 0;
-			int minInWindow = INT_MAX;
 			int elementsWeHave = N - idx;
 			if (size > elementsWeHave) continue;
+			int start = 0;
+			int minInWindow = nums[idx];
 			while (start < size && (idx + start) < N) {
 				minInWindow = min(minInWindow, nums[idx + start]);
 				start += 1;
 			}
 
-			if (minInWindow != INT_MAX) sparseTable[idx][exp] = minInWindow;
+			sparseTable[idx][exp] = minInWindow;
 		}
 
 	}
@@ -101,7 +101,25 @@ int main() {
 		cin >> L >> R;
 		queries[idx] = make_pair(L, R);
 	}
+	vector<int> LOG(MAXN);
+	LOG[1] = 0;
+	for (int i = 2; i <= MAXN; i++) {
+		LOG[i] = LOG[i / 2] + 1;
+	}
 
-	__slowSparseTable(nums, N);
+	vector<vector<int>> st = __slowSparseTable(nums, N);
+
+	for (pair<int, int>& query : queries) {
+		int L = query.first;
+		int R = query.second;
+		int j = getClosestPowerOf2(R - L + 1) - 1;
+		// int j = LOG[R - L + 1];
+		// cout << (R - L + 1) << " " << j << " " << jj << endl;
+		int minimum = min(st[L][j], st[R - (1 << j) + 1][j]);
+		cout << minimum << endl;
+
+	}
+
+
 	return 0;
 }
