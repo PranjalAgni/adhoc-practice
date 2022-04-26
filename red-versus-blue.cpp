@@ -21,24 +21,26 @@ int computeScore(string& matchString) {
 string generateMinimumTimeline(int M, int R, int B) {
 	string answer = "";
 	int minScore = INT_MAX;
-	for (int placement = 1; placement <= (R / 2); placement++) {
+	for (int placement = 1; placement <= B; placement++) {
 		int countR = R;
 		int countB = B;
 		string currentAnswer = "";
 		// int currentScore = max(placement, countR - (countB * placement));
 		// if (currentScore > minScore) continue;
 		while (countR || countB) {
-			int currentTimesR = placement;
-			while (countR > 0 && currentTimesR-- > 0) {
+			int currentTimesB = placement;
+			if (countR > 0) {
 				currentAnswer.push_back('R');
 				countR -= 1;
 			}
 
-			if (countB) {
+			while (countB > 0 && currentTimesB-- > 0) {
 				currentAnswer.push_back('B');
 				countB -= 1;
 			}
 		}
+
+		cout << currentAnswer << endl;
 
 		// minScore = currentScore;
 		// answer = currentAnswer;
@@ -76,3 +78,7 @@ int main() {
 	}
 	return 0;
 }
+
+
+// RRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRBBBBB
+// RRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRRBRRBRRBRRBRRBRRBRRBRRBRRBRRBRRBRRBRRBRRBRRBRRBRR
