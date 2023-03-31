@@ -34,6 +34,8 @@ int main() {
 	while (T-- > 0) {
 		int L, R;
 		cin >> L >> R;
+		string numStr = "901";
+
 		int start = max(L, R - 100);
 		int answer = start;
 		for (int idx = start; idx <= R; idx++) {
@@ -50,3 +52,15 @@ int main() {
 
 	return 0;
 }
+
+
+
+
+
+// Rent  Room    1m  6d   24d
+// 16000 pranjal 534 3204 12816(6408*2)
+// 15000 sandesh 500 3000 12000(6000*2)
+// 14500 ?       484 2904 11616
+
+
+
