@@ -23,7 +23,6 @@ int main() {
 		if (currentHouse <= houses[idx]) {
 			answer += houses[idx] - currentHouse;
 		} else {
-			//  1 2 3 4 5 6
 			int distance = (n - currentHouse) + houses[idx];
 			answer += distance;
 		}
