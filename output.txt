@@ -1,5 +1,1 @@
-Total rn = 4
-Total gn = 1
-Node 5
-0 1 0
-Answer = 1
+5
