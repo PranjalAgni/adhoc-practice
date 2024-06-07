@@ -1,40 +1,54 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int bfs(unordered_map<int, vector<int>>& adjList, int n) {
-	vector<int> visited(n + 1, 0);
+struct TraversalData {
+	int node;
+	int parent;
+	int distance;
+};
 
-	queue<int> q;
-	q.push(1);
-	int distance = 0;
+void bfs(unordered_map<int, vector<int>>& adjList, int n, int src, int target) {
+	vector<int> distance(n + 1, INT_MAX);
+	vector<int> parent(n + 1);
+	queue<TraversalData> q;
+	q.push({src, -1, 1});
+
 
 	while (!q.empty()) {
-		int node = q.front();
-		visited[node] = 1;
+		TraversalData current = q.front();
 		q.pop();
-		distance += 1;
-		if (node == n) {
-			break;
-		}
-		for (int& neighbour : adjList[node]) {
-			if (visited[neighbour]) continue;
-			q.push(neighbour);
+		if (current.distance < distance[current.node]) {
+			distance[current.node] = current.distance;
+			parent[current.node] = current.parent;
+
+			for (int& neighbour : adjList[current.node]) {
+				q.push({neighbour, current.node, current.distance + 1});
+			}
 		}
 	}
 
-	return distance;
-}
+	if (distance[target] == INT_MAX) {
+		cout << "IMPOSSIBLE" << endl;
+	} else {
+		cout << distance[target] << endl;
+		vector<int> path;
 
-void dfs(int& N, unordered_map<int, vector<int>>& adjList, int node, int parent, vector<int>& visited, int& answer) {
-	if (visited[node]) return;
-	visited[node] = 1;
-	answer += 1;
-	if (node == N) return;
-	for (int& neighbour : adjList[node]) {
-		if (neighbour == parent) continue;
-		dfs(N, adjList, neighbour, node, visited, answer);
+		while (parent[target] != -1) {
+			path.push_back(target);
+			target = parent[target];
+		}
+
+		path.push_back(src);
+
+		for (int idx = path.size() - 1; idx >= 0; idx--) {
+			cout << path[idx] << " ";
+		}
+
+		cout << endl;
 	}
 }
+
+
 int main() {
 #ifndef ONLINE_JUDGE
 	// for getting input from input.txt
@@ -55,10 +69,7 @@ int main() {
 		adjList[v].push_back(u);
 	}
 
-	// cout << bfs(adjList, n) << endl;
-	vector<int> visited(n + 1, 0);
-	int answer = 0;
-	dfs(n, adjList, 1, -1, visited, answer);
-	cout << answer << endl;
+	bfs(adjList, n, 1, n);
+
 	return 0;
 }
